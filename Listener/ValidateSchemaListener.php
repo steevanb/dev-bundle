@@ -96,10 +96,7 @@ class ValidateSchemaListener
         return $this;
     }
 
-    /**
-     * @param GetResponseEvent $event
-     */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest()
     {
         $this->assertSchemaIsValid(new Response());
     }
