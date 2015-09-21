@@ -4,7 +4,8 @@ Configuration
 ```yml
 # app/config/config.yml
 dev:
-    translation_not_found: [TRUE|false] # throws TranslationNotFoundException on translsation not found
+    # throws TranslationNotFoundException on translsation not found
+    translation_not_found: [TRUE|false]
 ```
 
 [Back to index](../../README.md)
