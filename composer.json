@@ -1,16 +1,15 @@
 {
     "name": "steevanb/dev-bundle",
     "license": "MIT",
-    "type": "bundle",
+    "type": "symfony-bundle",
     "description": "Throws exception on translation not found, deprecated logs, etc",
     "autoload": {
-        "psr-0": { "steevanb\\DevBundle\\": "" }
+        "psr-4": { "steevanb\\DevBundle\\": "" }
     },
     "require": {
       "php": ">=5.3.3",
       "symfony/symfony": ">=2.3"
     },
-    "target-dir": "steevanb/DevBundle",
     "repositories": [
         {
             "type": "vcs",
