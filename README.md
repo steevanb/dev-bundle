@@ -18,3 +18,5 @@ Features
 --------
 
 [Translation not found exception](Resources/doc/translationNotFoundException.md)
+
+[Schema validation](Resources/doc/validateSchema.md)

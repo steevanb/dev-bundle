@@ -1,3 +1,8 @@
+1.1.0 (2015-09-21)
+------------------
+
+- Add schema validation, who throws steevanb\DevBundle\Exception\InvalidMappingException on mapping error
+
 1.0.0 (2015-09-21)
 ------------------
 
