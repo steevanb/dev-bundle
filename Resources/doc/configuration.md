@@ -4,7 +4,7 @@ Configuration
 ```yml
 # app/config/config.yml
 dev:
-    # throws TranslationNotFoundException on translsation not found
+    # throws TranslationNotFoundException on translation not found
     translation_not_found: [TRUE|false]
 ```
 

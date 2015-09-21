@@ -15,4 +15,4 @@ Bundle for dev environment, to help you fix some errors.
 Features
 --------
 
-[Translation not found](Resources/doc/translation.md)
+[Translation not found exception](Resources/doc/translationNotFoundException.md)
