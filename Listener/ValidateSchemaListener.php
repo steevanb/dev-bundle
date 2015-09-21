@@ -66,7 +66,7 @@ class ValidateSchemaListener
                     foreach ($this->schemaValidatorMessages as $schemaValidatorMessage) {
                         $messageStart = sprintf($schemaValidatorMessage, $excludedProperty);
                         if ($messageStart === substr($error, 0, strlen($messageStart))) {
-                            return ;
+                            return;
                         }
                     }
                 }
