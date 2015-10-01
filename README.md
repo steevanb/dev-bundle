@@ -1,7 +1,7 @@
-[![version](https://img.shields.io/badge/version-1.1.0-green.svg)](https://github.com/steevanb/dev-bundle/tree/1.1.0)
+[![version](https://img.shields.io/badge/version-1.1.1-green.svg)](https://github.com/steevanb/dev-bundle/tree/1.1.1)
 [![symfony](https://img.shields.io/badge/symfony-%3E%3D%202.3-blue.svg)](https://symfony.com/)
-[![SensionLabsInsight](https://img.shields.io/badge/SensionLabsInsight-platinum-brightgreen.svg)](https://insight.sensiolabs.com/projects/16b18376-e47e-4a0c-8a47-c0eead976317/analyses/6)
-[![Scrutinizer](https://img.shields.io/badge/scrutinizer-10%2F10-brightgreen.svg)](https://scrutinizer-ci.com/g/steevanb/dev-bundle/inspections/65c38fb8-d289-4f72-a276-8c35b92cce0f)
+[![SensionLabsInsight](https://img.shields.io/badge/SensionLabsInsight-platinum-brightgreen.svg)](https://insight.sensiolabs.com/projects/16b18376-e47e-4a0c-8a47-c0eead976317/analyses/9)
+[![Scrutinizer](https://img.shields.io/badge/scrutinizer-10%2F10-brightgreen.svg)](https://scrutinizer-ci.com/g/steevanb/dev-bundle/inspections/bf9e59fa-7e74-4201-8f9b-ac42036d8454)
 
 dev-bundle
 ==========
