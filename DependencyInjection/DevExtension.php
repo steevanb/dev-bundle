@@ -2,10 +2,12 @@
 
 namespace steevanb\DevBundle\DependencyInjection;
 
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Loader;
 
 class DevExtension extends Extension
 {
@@ -15,6 +17,9 @@ class DevExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yml');
+
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
@@ -40,10 +45,11 @@ class DevExtension extends Extension
     protected function parseValidateSchemaConfig(array $config, ContainerBuilder $container)
     {
         if ($config['validate_schema']['enabled']) {
-            $definition = new Definition('steevanb\\DevBundle\\Listener\\ValidateSchemaListener');
-            $definition->addArgument(new Reference('data_collector.doctrine'));
-            $definition->addArgument(new Reference('request_stack'));
-            $definition->addMethodCall('setExcludes', array($config['validate_schema']['excludes']));
+            $service = $container->getDefinition('dev.validateschema');
+            $service->addMethodCall('setExcludes', array($config['validate_schema']['excludes']));
+
+            $listener = new Definition('steevanb\\DevBundle\\Listener\\ValidateSchemaListener');
+            $listener->addArgument(new Reference('dev.validateschema'));
 
             if ($config['validate_schema']['event'] == 'kernel.request') {
                 $event = 'kernel.request';
@@ -52,12 +58,12 @@ class DevExtension extends Extension
                 $event = 'kernel.response';
                 $method = 'onKernelResponse';
             }
-            $definition->addTag('kernel.event_listener', array(
+            $listener->addTag('kernel.event_listener', array(
                 'event' => $event,
                 'method' => $method
             ));
 
-            $container->setDefinition('devbundle.validateschema', $definition);
+            $container->setDefinition('devbundle.validateschema', $listener);
         }
     }
 }

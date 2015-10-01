@@ -1,0 +1,4 @@
+services:
+    dev.validateschema:
+        class: steevanb\DevBundle\Service\ValidateSchemaService
+        arguments: [ @data_collector.doctrine, @request_stack ]
