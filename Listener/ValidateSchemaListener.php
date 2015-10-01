@@ -4,7 +4,6 @@ namespace steevanb\DevBundle\Listener;
 
 use steevanb\DevBundle\Service\ValidateSchemaService;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 class ValidateSchemaListener
 {
@@ -39,11 +38,7 @@ class ValidateSchemaListener
         $this->validateSchema = $validateSchema;
     }
 
-    /**
-     * @param GetResponseEvent $event
-     * @throws \steevanb\DevBundle\Exception\InvalidMappingException
-     */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest()
     {
         $this->validateSchema->assertSchemaIsValid();
     }
