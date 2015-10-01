@@ -1,3 +1,8 @@
+1.1.1 (2015-10-01)
+------------------
+
+- Create ValidateSchemaService, and fix schema validation with ValidateSchemaService::assertSchemaIsValid()
+
 1.1.0 (2015-09-21)
 ------------------
 
