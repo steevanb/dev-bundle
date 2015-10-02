@@ -61,7 +61,6 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                     ->arrayNode('excludes')
-                        ->addDefaultChildrenIfNoneSet()
                         ->prototype('scalar')
                     ->end()
                 ->end()
