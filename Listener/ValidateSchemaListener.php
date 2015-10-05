@@ -3,7 +3,6 @@
 namespace steevanb\DevBundle\Listener;
 
 use steevanb\DevBundle\Service\ValidateSchemaService;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 class ValidateSchemaListener
 {
@@ -43,11 +42,8 @@ class ValidateSchemaListener
         $this->validateSchema->assertSchemaIsValid();
     }
 
-    /**
-     * @param FilterResponseEvent $event
-     */
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse()
     {
-        $this->validateSchema->assertSchemaIsValid($event->getResponse());
+        $this->validateSchema->assertSchemaIsValid();
     }
 }
