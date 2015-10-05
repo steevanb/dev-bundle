@@ -1,8 +1,3 @@
-1.1.3 (2015-10-05)
-------------------
-
-- Fix schema validation, now validate all mappings, not just those used in Request scope
-
 1.1.2 (2015-10-02)
 ------------------
 
