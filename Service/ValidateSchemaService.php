@@ -2,18 +2,14 @@
 
 namespace steevanb\DevBundle\Service;
 
-use Doctrine\Bundle\DoctrineBundle\DataCollector\DoctrineDataCollector;
+use Doctrine\ORM\Tools\SchemaValidator;
 use steevanb\DevBundle\Exception\InvalidMappingException;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ValidateSchemaService
 {
-    /** @var DoctrineDataCollector */
-    protected $dataCollector;
-
-    /** @var RequestStack */
-    protected $requestStack;
+    /** @var RegistryInterface */
+    protected $doctrine;
 
     /** @var array */
     protected $excludedEntities = array();
@@ -36,13 +32,11 @@ class ValidateSchemaService
     );
 
     /**
-     * @param DoctrineDataCollector $dataCollector
-     * @param RequestStack $requestStack
+     * @param RegistryInterface $doctrine
      */
-    public function __construct(DoctrineDataCollector $dataCollector, RequestStack $requestStack)
+    public function __construct(RegistryInterface $doctrine)
     {
-        $this->dataCollector = $dataCollector;
-        $this->requestStack = $requestStack;
+        $this->doctrine = $doctrine;
     }
 
     /**
@@ -66,35 +60,27 @@ class ValidateSchemaService
     }
 
     /**
-     * @param Response|null $response
      * @throws InvalidMappingException
      */
-    public function assertSchemaIsValid(Response $response = null)
+    public function assertSchemaIsValid()
     {
-        if ($response === null) {
-            $response = new Response();
-        }
-        $this->dataCollector->collect($this->requestStack->getCurrentRequest(), $response);
-        $errors = $this->dataCollector->getMappingErrors();
-
-        if (count($errors) > 0) {
-            foreach ($errors as $em => $emErrors) {
-                foreach ($emErrors as $entity => $entityErrors) {
-                    foreach ($entityErrors as $entityError) {
-
-                        if (in_array($entity, $this->excludedEntities) === false) {
-                            foreach ($this->excludedProperties as $excludedProperty) {
-                                foreach ($this->schemaValidatorMessages as $schemaValidatorMessage) {
-                                    $messageStart = sprintf($schemaValidatorMessage, $excludedProperty);
-                                    if ($messageStart === substr($entityError, 0, strlen($messageStart))) {
-                                        continue 3;
-                                    }
-                                }
+        foreach ($this->doctrine->getManagers() as $managerName => $manager) {
+            $validator = new SchemaValidator($manager);
+            foreach ($validator->validateMapping() as $entity => $errors) {
+                if (in_array($entity, $this->excludedEntities)) {
+                    continue;
+                }
+                foreach ($errors as $error) {
+                    foreach ($this->excludedProperties as $excludedProperty) {
+                        foreach ($this->schemaValidatorMessages as $schemaValidatorMessage) {
+                            $messageStart = sprintf($schemaValidatorMessage, $excludedProperty);
+                            if ($messageStart === substr($error, 0, strlen($messageStart))) {
+                                continue 3;
                             }
-
-                            throw new InvalidMappingException($em, $entityError);
                         }
                     }
+
+                    throw new InvalidMappingException($managerName, $error);
                 }
             }
         }
