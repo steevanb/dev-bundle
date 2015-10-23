@@ -3,6 +3,7 @@
 namespace steevanb\DevBundle\Service;
 
 use Doctrine\ORM\Tools\SchemaValidator;
+use steevanb\DevBundle\Cache\SessionCache;
 use steevanb\DevBundle\Exception\InvalidMappingException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -16,6 +17,9 @@ class ValidateSchemaService
 
     /** @var array */
     protected $excludedProperties = array();
+
+    /** @var SessionCache */
+    protected $cache;
 
     /**
      * Messages from Doctrine\ORM\Tools\SchemaValidator
@@ -33,10 +37,12 @@ class ValidateSchemaService
 
     /**
      * @param RegistryInterface $doctrine
+     * @param SessionCache $cache
      */
-    public function __construct(RegistryInterface $doctrine)
+    public function __construct(RegistryInterface $doctrine, SessionCache $cache)
     {
         $this->doctrine = $doctrine;
+        $this->cache = $cache;
     }
 
     /**
@@ -64,6 +70,8 @@ class ValidateSchemaService
      */
     public function assertSchemaIsValid()
     {
+        $this->cache->refresh();
+
         foreach ($this->doctrine->getManagers() as $managerName => $manager) {
             $validator = new SchemaValidator($manager);
             foreach ($validator->validateMapping() as $entity => $errors) {
@@ -84,5 +92,7 @@ class ValidateSchemaService
                 }
             }
         }
+
+        $this->cache->defineLastRefresh();
     }
 }
