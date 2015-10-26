@@ -142,3 +142,4 @@ class SessionCache extends CacheProvider
         return null;
     }
 }
+
