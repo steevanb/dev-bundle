@@ -1,3 +1,8 @@
+1.1.4 (2015-20-26)
+------------------
+
+- Schema validation only when an ORM file is modified
+
 1.1.3 (2015-10-05)
 ------------------
 
