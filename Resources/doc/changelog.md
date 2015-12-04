@@ -1,3 +1,8 @@
+1.1.5 (2015-12-04)
+------------------
+
+- Fix Symfony 2.8 deprecated and Symfony 3.0 compatibility for yaml files
+
 1.1.4 (2015-20-26)
 ------------------
 
