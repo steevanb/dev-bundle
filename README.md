@@ -1,4 +1,4 @@
-[![version](https://img.shields.io/badge/version-1.1.4-green.svg)](https://github.com/steevanb/dev-bundle/tree/1.1.4)
+[![version](https://img.shields.io/badge/version-1.1.5-green.svg)](https://github.com/steevanb/dev-bundle/tree/1.1.5)
 [![symfony](https://img.shields.io/badge/symfony-%3E%3D%202.3-blue.svg)](https://symfony.com/)
 ![Total Downloads](https://poser.pugx.org/steevanb/dev-bundle/downloads)
 [![SensionLabsInsight](https://img.shields.io/badge/SensionLabsInsight-platinum-brightgreen.svg)](https://insight.sensiolabs.com/projects/16b18376-e47e-4a0c-8a47-c0eead976317/analyses/14)
