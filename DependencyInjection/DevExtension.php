@@ -23,8 +23,8 @@ class DevExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $this->parseTranslationConfig($config, $container);
-        $this->parseValidateSchemaConfig($config, $container);
+        $this->parseTranslationConfig($config['translation_not_found'], $container);
+        $this->parseValidateSchemaConfig($config['validate_schema'], $container);
     }
 
     /**
@@ -33,8 +33,9 @@ class DevExtension extends Extension
      */
     protected function parseTranslationConfig(array $config, ContainerBuilder $container)
     {
-        if ($config['translation_not_found']) {
+        if ($config['enabled']) {
             $container->setParameter('translator.class', 'steevanb\\DevBundle\\Translation\\Translator');
+            $container->setParameter('translator.allow_fallbacks', $config['allow_fallbacks']);
         }
     }
 
@@ -44,14 +45,14 @@ class DevExtension extends Extension
      */
     protected function parseValidateSchemaConfig(array $config, ContainerBuilder $container)
     {
-        if ($config['validate_schema']['enabled']) {
+        if ($config['enabled']) {
             $service = $container->getDefinition('dev.validateschema');
-            $service->addMethodCall('setExcludes', array($config['validate_schema']['excludes']));
+            $service->addMethodCall('setExcludes', array($config['excludes']));
 
             $listener = new Definition('steevanb\\DevBundle\\Listener\\ValidateSchemaListener');
             $listener->addArgument(new Reference('dev.validateschema'));
 
-            if ($config['validate_schema']['event'] == 'kernel.request') {
+            if ($config['event'] == 'kernel.request') {
                 $event = 'kernel.request';
                 $method = 'onKernelRequest';
             } else {

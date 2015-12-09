@@ -11,7 +11,7 @@ class TranslationNotFoundException extends \Exception
      */
     public function __construct($id, $locale, $domain)
     {
-        $message = 'Translation "' . $id . '" not found for locale "' . $locale . '", domain "' . $domain . '".';
+        $message = 'Translation "' . $id . '" not found for domain "' . $domain . '", locale "' . $locale . '".';
         parent::__construct($message);
     }
 }

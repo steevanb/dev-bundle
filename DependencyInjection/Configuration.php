@@ -28,13 +28,26 @@ class Configuration implements ConfigurationInterface
     protected function addTranslationConfig(NodeBuilder $node)
     {
         $node
-            ->scalarNode('translation_not_found')
-                ->defaultTrue()
-                ->validate()
-                ->ifNotInArray(array(true, false))
-                    ->thenInvalid('Invalid value %s, boolean required.')
+            ->arrayNode('translation_not_found')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('enabled')
+                        ->defaultTrue()
+                        ->validate()
+                        ->ifNotInArray(array(true, false))
+                            ->thenInvalid('Invalid value %s, boolean required.')
+                        ->end()
+                    ->end()
+                    ->scalarNode('allow_fallbacks')
+                        ->defaultFalse()
+                        ->validate()
+                        ->ifNotInArray(array(true, false))
+                            ->thenInvalid('Invalid value %s, boolean required.')
+                        ->end()
+                    ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     /**
