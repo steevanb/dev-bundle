@@ -5,7 +5,11 @@ Configuration
 # app/config/config.yml
 dev:
     # throws TranslationNotFoundException on translation not found
-    translation_not_found: [TRUE|false]
+    translation_not_found:
+        enabled: [TRUE|false]
+        # allow Translator to search your translation in fallbacks, or not
+        allow_fallbacks: [true|FALSE]
+    # validate Doctrine schema
     validate_schema:
         enabled: [TRUE|false]
         excludes:

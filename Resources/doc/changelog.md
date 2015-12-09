@@ -1,3 +1,9 @@
+2.0.0 (2015-12-09)
+------------------
+
+- [[Config](configuration.md)] Change configuration tree
+- Add dev.translation_not_found.allow_callbacks configuration
+
 1.1.5 (2015-12-04)
 ------------------
 
