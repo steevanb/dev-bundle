@@ -15,6 +15,9 @@ class SessionCache extends CacheProvider
     /** @var KernelInterface */
     protected $kernel;
 
+    /** @var array */
+    protected $mappingPaths = array();
+
     /**
      * @param SessionInterface $session
      * @param KernelInterface $kernel
@@ -23,6 +26,34 @@ class SessionCache extends CacheProvider
     {
         $this->session = $session;
         $this->kernel = $kernel;
+    }
+
+    /**
+     * @param string $path
+     * @return $this
+     */
+    public function addPathToScan($path)
+    {
+        if (in_array($path, $this->mappingPaths) === false) {
+            $this->mappingPaths[] = $path;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $bundle
+     * @return $this
+     */
+    public function addBundleToScan($bundle)
+    {
+        $path = $this->kernel->getBundle($bundle)->getPath();
+        $path .= DIRECTORY_SEPARATOR . 'Resources';
+        $path .= DIRECTORY_SEPARATOR . 'config';
+        $path .= DIRECTORY_SEPARATOR . 'doctrine';
+        $this->addPathToScan($path);
+
+        return $this;
     }
 
     /**
@@ -38,11 +69,10 @@ class SessionCache extends CacheProvider
         }
         $lastRefreshTimestamp = $lastRefresh->format('U');
 
-        foreach ($this->kernel->getBundles() as $bundle) {
-            $ormPath = $bundle->getPath() . '/Resources/config/doctrine';
-            if (is_dir($ormPath)) {
+        foreach ($this->mappingPaths as $path) {
+            if (is_dir($path)) {
                 $finder = new Finder();
-                foreach ($finder->in($ormPath)->files() as $file) {
+                foreach ($finder->in($path)->files() as $file) {
                     if (filemtime($file) >= $lastRefreshTimestamp) {
                         $this->flushAll();
 
