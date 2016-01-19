@@ -15,6 +15,13 @@ dev:
         excludes:
             - Foo\Bar\Entity
             - Foo\Bar\Entity#property
+        bundles:
+            # enable scan of Resources/config/doctrine dir of bundles
+            enabled: [TRUE|false]
+            # bundles to scan. if empty or not specified, will add all installed bundles
+            bundles:
+                - FooBundle
+                - BarBundle
 ```
 
 Validate schema section

@@ -1,3 +1,12 @@
+2.1.0 (2016-01-19)
+------------------
+
+- Rename schema validation listener devbundle.validateschema to dev.validateschema.listener
+- SessionCache will not automatically scan bundles to find modified files, it will now use configuration
+- Add dev.validate_schema.paths configuration
+- Add dev.validate_schema.bundles.enabled and dev.validate_schema.bundles.bundles configuration
+- Add SessionCache::addPathToScan() and SessionCache::addBundleToScan()
+
 2.0.0 (2015-12-09)
 ------------------
 
