@@ -46,8 +46,25 @@ class DevExtension extends Extension
     protected function parseValidateSchemaConfig(array $config, ContainerBuilder $container)
     {
         if ($config['enabled']) {
-            $service = $container->getDefinition('dev.validateschema');
-            $service->addMethodCall('setExcludes', array($config['excludes']));
+            $sessionCache = $container->getDefinition('dev.session_cache');
+
+            foreach ($config['paths'] as $path) {
+                $sessionCache->addMethodCall('addPathToScan', array($path));
+            }
+
+            if ($config['bundles']['enabled']) {
+                if (count($config['bundles']['bundles'])) {
+                    $bundles = $config['bundles']['bundles'];
+                } else {
+                    $bundles = array_keys($container->getParameter('kernel.bundles'));
+                }
+                foreach ($bundles as $bundleName) {
+                    $sessionCache->addMethodCall('addBundleToScan', array($bundleName));
+                }
+            }
+
+            $validateSchema = $container->getDefinition('dev.validateschema');
+            $validateSchema->addMethodCall('setExcludes', array($config['excludes']));
 
             $listener = new Definition('steevanb\\DevBundle\\Listener\\ValidateSchemaListener');
             $listener->addArgument(new Reference('dev.validateschema'));
@@ -64,7 +81,7 @@ class DevExtension extends Extension
                 'method' => $method
             ));
 
-            $container->setDefinition('devbundle.validateschema', $listener);
+            $container->setDefinition('dev.validateschema.listener', $listener);
         }
     }
 }
