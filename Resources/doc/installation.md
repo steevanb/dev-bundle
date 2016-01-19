@@ -1,7 +1,7 @@
 Composer
 --------
 ```
-composer require steevanb/dev-bundle 2.0.*
+composer require steevanb/dev-bundle 2.1.*
 ```
 
 Or add it manually, and then execute composer update steevanb/dev-bundle :
@@ -10,7 +10,7 @@ Or add it manually, and then execute composer update steevanb/dev-bundle :
 # composer.json
 {
     "require": {
-        "steevanb/dev-bundle": "2.0.*"
+        "steevanb/dev-bundle": "2.1.*"
     }
 }
 ```
