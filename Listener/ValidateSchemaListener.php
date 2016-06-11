@@ -3,6 +3,8 @@
 namespace steevanb\DevBundle\Listener;
 
 use steevanb\DevBundle\Service\ValidateSchemaService;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class ValidateSchemaListener
 {
@@ -37,13 +39,13 @@ class ValidateSchemaListener
         $this->validateSchema = $validateSchema;
     }
 
-    public function onKernelRequest()
+    /**
+     * @param GetResponseEvent $event
+     */
+    public function validateSchema(GetResponseEvent $event)
     {
-        $this->validateSchema->assertSchemaIsValid();
-    }
-
-    public function onKernelResponse()
-    {
-        $this->validateSchema->assertSchemaIsValid();
+        if ($event->getRequestType() === HttpKernelInterface::MASTER_REQUEST) {
+            $this->validateSchema->assertSchemaIsValid();
+        }
     }
 }

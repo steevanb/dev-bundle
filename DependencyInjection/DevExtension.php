@@ -69,16 +69,10 @@ class DevExtension extends Extension
             $listener = new Definition('steevanb\\DevBundle\\Listener\\ValidateSchemaListener');
             $listener->addArgument(new Reference('dev.validateschema'));
 
-            if ($config['event'] == 'kernel.request') {
-                $event = 'kernel.request';
-                $method = 'onKernelRequest';
-            } else {
-                $event = 'kernel.response';
-                $method = 'onKernelResponse';
-            }
+            $event = ($config['event'] == 'kernel.request') ? $event = 'kernel.request' : 'kernel.response';
             $listener->addTag('kernel.event_listener', array(
                 'event' => $event,
-                'method' => $method
+                'method' => 'validateSchema'
             ));
 
             $container->setDefinition('dev.validateschema.listener', $listener);
