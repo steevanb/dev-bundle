@@ -2,13 +2,12 @@
     "name": "steevanb/dev-bundle",
     "license": "MIT",
     "type": "symfony-bundle",
-    "description": "Throws exception on translation not found, deprecated logs, etc",
+    "description": "Throws exception on translation not found and invalid doctrine schema.",
     "autoload": {
         "psr-4": { "steevanb\\DevBundle\\": "" }
     },
     "require": {
-      "php": ">=5.3.3",
-      "symfony/symfony": ">=2.3"
+      "symfony/symfony": "^2.3|^3.0"
     },
     "repositories": [
         {
@@ -17,3 +16,4 @@
         }
     ]
 }
+
