@@ -1,3 +1,8 @@
+2.1.1 (2016-06-11)
+------------------
+
+- Do not validate Doctrine schema on sub-requests
+
 2.1.0 (2016-01-19)
 ------------------
 
