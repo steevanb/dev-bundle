@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class DevExtension extends Extension
 {
@@ -23,25 +24,38 @@ class DevExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $this->parseTranslationConfig($config['translation_not_found'], $container);
-        $this->parseValidateSchemaConfig($config['validate_schema'], $container);
+        $this
+            ->parseTranslationConfig($config['translation_not_found'], $container)
+            ->parseValidateSchemaConfig($config['validate_schema'], $container);
     }
 
     /**
      * @param array $config
      * @param ContainerBuilder $container
+     * @return $this
      */
     protected function parseTranslationConfig(array $config, ContainerBuilder $container)
     {
         if ($config['enabled']) {
-            $container->setParameter('translator.class', 'steevanb\\DevBundle\\Translation\\Translator');
-            $container->setParameter('translator.allow_fallbacks', $config['allow_fallbacks']);
+            $definition = new Definition();
+            $definition->setClass('steevanb\\DevBundle\\EventListener\\TranslationsNotFoundListener');
+            $definition->addArgument(new Reference('translator'));
+            $definition->addMethodCall('setAllowFallbacks', array($config['allow_fallbacks']));
+            $definition->addTag('kernel.event_listener', array(
+                'event' => KernelEvents::RESPONSE,
+                'method' => 'assertAllTranslationsFound'
+            ));
+
+            $container->setDefinition('dev.translations_not_found', $definition);
         }
+
+        return $this;
     }
 
     /**
      * @param array $config
      * @param ContainerBuilder $container
+     * @return $this
      */
     protected function parseValidateSchemaConfig(array $config, ContainerBuilder $container)
     {
@@ -63,11 +77,11 @@ class DevExtension extends Extension
                 }
             }
 
-            $validateSchema = $container->getDefinition('dev.validateschema');
+            $validateSchema = $container->getDefinition('dev.validate_schema');
             $validateSchema->addMethodCall('setExcludes', array($config['excludes']));
 
-            $listener = new Definition('steevanb\\DevBundle\\Listener\\ValidateSchemaListener');
-            $listener->addArgument(new Reference('dev.validateschema'));
+            $listener = new Definition('steevanb\\DevBundle\\EventListener\\ValidateSchemaListener');
+            $listener->addArgument(new Reference('dev.validate_schema'));
 
             $event = ($config['event'] == 'kernel.request') ? $event = 'kernel.request' : 'kernel.response';
             $listener->addTag('kernel.event_listener', array(
@@ -75,7 +89,9 @@ class DevExtension extends Extension
                 'method' => 'validateSchema'
             ));
 
-            $container->setDefinition('dev.validateschema.listener', $listener);
+            $container->setDefinition('dev.validate_schema.listener', $listener);
         }
+
+        return $this;
     }
 }

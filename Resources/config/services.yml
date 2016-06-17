@@ -1,5 +1,5 @@
 services:
-    dev.validateschema:
+    dev.validate_schema:
         class: steevanb\DevBundle\Service\ValidateSchemaService
         arguments: [ '@doctrine', '@dev.session_cache' ]
 
