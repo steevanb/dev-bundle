@@ -1,4 +1,4 @@
-3.0.0 (2016-16-17)
+3.0.0 (2016-06-17)
 ------------------
 
 - Change Symfony required version for translation not found validator is now ^2.6|^3.0 instead of ^2.3
