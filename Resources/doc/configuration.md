@@ -4,7 +4,7 @@ Configuration
 ```yml
 # app/config/config.yml
 dev:
-    # throws TranslationNotFoundException on translation not found
+    # throws steevanb\DevBundle\Exception\TranslationsNotFoundException on translations not found
     translation_not_found:
         enabled: [TRUE|false]
         # allow Translator to search your translation in fallbacks, or not

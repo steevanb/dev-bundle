@@ -1,11 +1,19 @@
-3.0.0 (2016-06-17)
+4.0.0 (2016-26-09)
+------------------
+
+- Refactor since beginning Doctrine schema validation
+   - Remove SessionCache
+   - Validate mapping only when a mapping file is modified
+- Remove useless steevanb\Exception\TranslationNotFoundException
+
+3.0.0 (2016-16-17)
 ------------------
 
 - Change Symfony required version for translation not found validator is now ^2.6|^3.0 instead of ^2.3
 - Refactor since beginning translation not found validator :
    - Remove steevanb\DevBundle\Translation
    - Use Symfony\Component\Translation\DataCollectorTranslator to retrieve missings translations
-   - Now throws a steevanb\Exception\TranslationsNotFoundException, instead of steevanb\Exception\TranslationNotFoundException before
+   - Now throws a steevanb\Exception\TranslationsNotFoundException, instead of steevanb\Exception\TranslationNotFoundException
 - Rename steevanb\DevBundle\Listener namespace to steevanb\DevBundle\EventListener
 
 2.1.1 (2016-06-11)

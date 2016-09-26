@@ -60,10 +60,10 @@ class DevExtension extends Extension
     protected function parseValidateSchemaConfig(array $config, ContainerBuilder $container)
     {
         if ($config['enabled']) {
-            $sessionCache = $container->getDefinition('dev.session_cache');
+            $validateSchemaDefinition = $container->getDefinition('dev.validate_schema');
 
             foreach ($config['paths'] as $path) {
-                $sessionCache->addMethodCall('addPathToScan', array($path));
+                $validateSchemaDefinition->addMethodCall('addMappingPath', array($path));
             }
 
             if ($config['bundles']['enabled']) {
@@ -73,19 +73,17 @@ class DevExtension extends Extension
                     $bundles = array_keys($container->getParameter('kernel.bundles'));
                 }
                 foreach ($bundles as $bundleName) {
-                    $sessionCache->addMethodCall('addBundleToScan', array($bundleName));
+                    $validateSchemaDefinition->addMethodCall('addMappingBundle', array($bundleName));
                 }
             }
 
-            $validateSchema = $container->getDefinition('dev.validate_schema');
-            $validateSchema->addMethodCall('setExcludes', array($config['excludes']));
+            $validateSchemaDefinition->addMethodCall('setExcludes', array($config['excludes']));
 
             $listener = new Definition('steevanb\\DevBundle\\EventListener\\ValidateSchemaListener');
             $listener->addArgument(new Reference('dev.validate_schema'));
 
-            $event = ($config['event'] == 'kernel.request') ? $event = 'kernel.request' : 'kernel.response';
             $listener->addTag('kernel.event_listener', array(
-                'event' => $event,
+                'event' => ($config['event'] == 'kernel.request') ? $event = 'kernel.request' : 'kernel.response',
                 'method' => 'validateSchema'
             ));
 
