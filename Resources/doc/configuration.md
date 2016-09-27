@@ -12,6 +12,7 @@ dev:
     # validate Doctrine schema
     validate_schema:
         enabled: [TRUE|false]
+        event: [KERNEL.REQUEST|kernel.response]
         excludes:
             - Foo\Bar\Entity
             - Foo\Bar\Entity#property
