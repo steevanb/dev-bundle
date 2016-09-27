@@ -83,7 +83,7 @@ class DevExtension extends Extension
             $listener->addArgument(new Reference('dev.validate_schema'));
 
             $listener->addTag('kernel.event_listener', array(
-                'event' => ($config['event'] == 'kernel.request') ? $event = 'kernel.request' : 'kernel.response',
+                'event' => ($config['event'] == 'kernel.request') ? 'kernel.request' : 'kernel.response',
                 'method' => 'validateSchema'
             ));
 
