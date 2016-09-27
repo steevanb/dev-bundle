@@ -5,6 +5,7 @@
    - Remove SessionCache
    - Validate mapping only when a mapping file is modified
 - Remove useless steevanb\Exception\TranslationNotFoundException
+- Add dev.validate_schema.disabled_urls configuration
 
 3.0.0 (2016-16-17)
 ------------------

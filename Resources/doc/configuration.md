@@ -12,6 +12,10 @@ dev:
     # validate Doctrine schema
     validate_schema:
         enabled: [TRUE|false]
+        disabled_urls:
+            - /_wdt
+            - /_profiler/
+            - /_errors
         event: [KERNEL.REQUEST|kernel.response]
         excludes:
             - Foo\Bar\Entity

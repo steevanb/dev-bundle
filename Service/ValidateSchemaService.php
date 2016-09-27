@@ -103,7 +103,7 @@ class ValidateSchemaService
     public function assertSchemaIsValid()
     {
         if ($this->needValidate()) {
-            foreach ($this->doctrine->getEntityManagers() as $managerName => $manager) {
+            foreach ($this->doctrine->getManagers() as $managerName => $manager) {
                 $validator = new SchemaValidator($manager);
                 foreach ($validator->validateMapping() as $entity => $errors) {
                     $this->assertAuthorizedMappingErrors($managerName, $entity, $errors);

@@ -81,6 +81,7 @@ class DevExtension extends Extension
 
             $listener = new Definition('steevanb\\DevBundle\\EventListener\\ValidateSchemaListener');
             $listener->addArgument(new Reference('dev.validate_schema'));
+            $listener->addArgument($config['disabled_urls']);
 
             $listener->addTag('kernel.event_listener', array(
                 'event' => ($config['event'] == 'kernel.request') ? 'kernel.request' : 'kernel.response',
