@@ -1,0 +1,365 @@
+{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
+
+{% macro writeValue(value) %}
+    {% if value is iterable %}
+        <i>array(...)</i>
+    {% elseif value is same as (true) %}
+        <strong>true</strong>
+    {% elseif value is same as (false) %}
+        <strong>false</strong>
+    {% elseif value is same as (null) %}
+        <strong>null</strong>
+    {% else %}
+        {{ value }}
+    {% endif %}
+{% endmacro %}
+
+{% block toolbar %}
+    {% set icon %}
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+            <path fill="#AAAAAA" d="M15.1,4.3c-2.1-0.5-4.2-0.5-6.2,0C8.6,4.3,8.2,4.1,8.2,3.8V3.4c0-1.2,1-2.3,2.3-2.3h3c1.2,0,2.3,1,2.3,2.3
+                v0.3C15.8,4.1,15.4,4.3,15.1,4.3z M20.9,14c0,4.9-4,8.9-8.9,8.9s-8.9-4-8.9-8.9s4-8.9,8.9-8.9S20.9,9.1,20.9,14z M16.7,15
+                c0-0.6-0.4-1-1-1H13V8.4c0-0.6-0.4-1-1-1s-1,0.4-1,1v6.2c0,0.6,0.4,1.3,1,1.3h3.7C16.2,16,16.7,15.6,16.7,15z"></path>
+        </svg>
+
+        <span class="sf-toolbar-value">
+            {{ collector.countDeclaredClasses() }} / {{ collector.countInstantiatedServices() }}
+        </span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Declared classes</b>
+            <span class="sf-toolbar-status">{{ collector.countDeclaredClasses() }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Declared interfaces</b>
+            <span class="sf-toolbar-status">{{ collector.countDeclaredInterfaces() }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Declared traits</b>
+            <span class="sf-toolbar-status">{{ collector.countDeclaredTraits() }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Defined constants</b>
+            <span class="sf-toolbar-status">{{ collector.countDefinedConstants() }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Defined functions</b>
+            <span class="sf-toolbar-status">{{ collector.countDefinedFunctions() }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Services</b>
+            <span class="sf-toolbar-status">{{ collector.countServiceIds() }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Instantiated services</b>
+            <span class="sf-toolbar-status">{{ collector.countInstantiatedServices() }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Parameters</b>
+            <span class="sf-toolbar-status">{{ collector.countParameters() }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Listeners</b>
+            <span class="sf-toolbar-status">{{ collector.countListeners() }}</span>
+        </div>
+    {% endset %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: true }) }}
+{% endblock %}
+
+
+{% block menu %}
+    <span class="label">
+        <span class="icon">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+                <path fill="#AAAAAA" d="M15.1,4.3c-2.1-0.5-4.2-0.5-6.2,0C8.6,4.3,8.2,4.1,8.2,3.8V3.4c0-1.2,1-2.3,2.3-2.3h3c1.2,0,2.3,1,2.3,2.3
+                    v0.3C15.8,4.1,15.4,4.3,15.1,4.3z M20.9,14c0,4.9-4,8.9-8.9,8.9s-8.9-4-8.9-8.9s4-8.9,8.9-8.9S20.9,9.1,20.9,14z M16.7,15
+                    c0-0.6-0.4-1-1-1H13V8.4c0-0.6-0.4-1-1-1s-1,0.4-1,1v6.2c0,0.6,0.4,1.3,1,1.3h3.7C16.2,16,16.7,15.6,16.7,15z"></path>
+            </svg>
+        </span>
+        <strong>
+            Loaded
+            <span class="count">
+                <span>{{ collector.countDeclaredClasses() }}</span>
+            </span>
+        </strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    {% import _self as self %}
+    <div class="metrics">
+        <div class="metric">
+            <span class="value">{{ collector.countDeclaredClasses() }}</span>
+            <span class="label">Classes</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.countDeclaredInterfaces() }}</span>
+            <span class="label">Interfaces</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.countDeclaredTraits() }}</span>
+            <span class="label">Traits</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.countDefinedConstants() }}</span>
+            <span class="label">Constants</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.countDefinedFunctions() }}</span>
+            <span class="label">Functions</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.countServiceIds() }}</span>
+            <span class="label">Services</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.countInstantiatedServices() }}</span>
+            <span class="label">Instantiated services</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.countParameters() }}</span>
+            <span class="label">Parameters</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.countListeners() }}</span>
+            <span class="label">Listeners</span>
+        </div>
+    </div>
+
+    <h2>{{ collector.countDeclaredClasses() }} declared classes</h2>
+    <a
+        class="link-inverse sf-toggle"
+        data-toggle-selector="#declared-classes"
+        data-toggle-alt-content="Hide declared classes"
+    >
+        Show declared classes
+    </a>
+    <div id="declared-classes" class="sf-toggle-content sf-toggle-hidden">
+        <table>
+            <thead>
+                <tr>
+                    <th>Class</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for class in collector.getDeclaredClasses() %}
+                    <tr>
+                        <td>{{ class }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>{{ collector.countDeclaredInterfaces() }} declared interfaces</h2>
+    <a
+        class="link-inverse sf-toggle"
+        data-toggle-selector="#declared-interfaces"
+        data-toggle-alt-content="Hide declared interfaces"
+    >
+        Show declared classes
+    </a>
+    <div id="declared-interfaces" class="sf-toggle-content sf-toggle-hidden">
+        <table>
+            <thead>
+                <tr>
+                    <th>Interface</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for interface in collector.getDeclaredInterfaces() %}
+                    <tr>
+                        <td>{{ interface }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>{{ collector.countDeclaredTraits() }} declared traits</h2>
+    <a
+        class="link-inverse sf-toggle"
+        data-toggle-selector="#declared-traits"
+        data-toggle-alt-content="Hide declared traits"
+    >
+        Show declared traits
+    </a>
+    <div id="declared-traits" class="sf-toggle-content sf-toggle-hidden">
+        <table>
+            <thead>
+                <tr>
+                    <th>Trait</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trait in collector.getDeclaredTraits() %}
+                    <tr>
+                        <td>{{ trait }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>{{ collector.countDefinedConstants() }} defined constants</h2>
+    <a
+        class="link-inverse sf-toggle"
+        data-toggle-selector="#defined-constants"
+        data-toggle-alt-content="Hide defined constants"
+    >
+        Show defined constants
+    </a>
+    <div id="defined-constants" class="sf-toggle-content sf-toggle-hidden">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for name, value in collector.getDefinedConstants() %}
+                    <tr>
+                        <td style="word-break: keep-all">{{ name }}</td>
+                        <td>{{ self.writeValue(value) }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>{{ collector.countDefinedFunctions() }} defined functions</h2>
+    <a
+            class="link-inverse sf-toggle"
+            data-toggle-selector="#defined-functions"
+            data-toggle-alt-content="Hide defined functions"
+    >
+        Show defined functions
+    </a>
+    <div id="defined-functions" class="sf-toggle-content sf-toggle-hidden">
+        <table>
+            <thead>
+                <tr>
+                    <th>Function</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for function in collector.getDefinedFunctions() %}
+                    <tr>
+                        <td>{{ function }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>{{ collector.countServiceIds() }} services</h2>
+    <a
+        class="link-inverse sf-toggle"
+        data-toggle-selector="#service-ids"
+        data-toggle-alt-content="Hide services"
+    >
+        Show services
+    </a>
+    <div id="service-ids" class="sf-toggle-content sf-toggle-hidden">
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for id in collector.getServiceIds() %}
+                    <tr>
+                        <td>{{ id }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>{{ collector.countInstantiatedServices() }} instantiated services</h2>
+    <a
+        class="link-inverse sf-toggle"
+        data-toggle-selector="#instantiated-services"
+        data-toggle-alt-content="Hide instantiated services"
+    >
+        Show instantiated services
+    </a>
+    <div id="instantiated-services" class="sf-toggle-content sf-toggle-hidden">
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Class</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for id, class in collector.getInstantiatedServices() %}
+                    <tr>
+                        <td>{{ id }}</td>
+                        <td>{{ class }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>{{ collector.countParameters() }} parameters</h2>
+    <a
+        class="link-inverse sf-toggle"
+        data-toggle-selector="#parameters"
+        data-toggle-alt-content="Hide parameters"
+    >
+        Show parameters
+    </a>
+    <div id="parameters" class="sf-toggle-content sf-toggle-hidden">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for name, value in collector.getParameters() %}
+                    <tr>
+                        <td>{{ name }}</td>
+                        <td>{{ self.writeValue(value) }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>{{ collector.countListeners() }} listeners</h2>
+    <a
+        class="link-inverse sf-toggle"
+        data-toggle-selector="#listeners"
+        data-toggle-alt-content="Hide listeners"
+    >
+        Show listeners
+    </a>
+    <div id="listeners" class="sf-toggle-content sf-toggle-hidden">
+        {% for event, listeners in collector.getListeners() %}
+            <h3>{{ event }}</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for class in listeners %}
+                        <tr>
+                            <td>{{ class }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+    </div>
+{% endblock %}
