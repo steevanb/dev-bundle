@@ -1,3 +1,7 @@
+### [4.1.1](../../compare/4.1.0...4.1.1) - 2018-08-23
+
+- [@ZeMarine](https://github.com/zemarine) Allow Symfony ^4.0
+
 ### [4.1.0](../../compare/4.0.0...4.1.0) - 2016-08-08
 
 - Add Symfony WebProfiler panel : Loaded, who show loaded classes, services etc
