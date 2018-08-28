@@ -1,22 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace steevanb\DevBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\DependencyInjection\{
+    ContainerBuilder,
+    Definition,
+    Reference,
+    Loader
+};
+use Symfony\Component\HttpKernel\{
+    DependencyInjection\Extension,
+    KernelEvents
+};
 
 class DevExtension extends Extension
 {
-    /**
-     * @param array $configs
-     * @param ContainerBuilder $container
-     */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
@@ -29,12 +31,7 @@ class DevExtension extends Extension
             ->parseValidateSchemaConfig($config['validate_schema'], $container);
     }
 
-    /**
-     * @param array $config
-     * @param ContainerBuilder $container
-     * @return $this
-     */
-    protected function parseTranslationConfig(array $config, ContainerBuilder $container)
+    protected function parseTranslationConfig(array $config, ContainerBuilder $container): self
     {
         if ($config['enabled']) {
             $definition = new Definition();
@@ -52,12 +49,7 @@ class DevExtension extends Extension
         return $this;
     }
 
-    /**
-     * @param array $config
-     * @param ContainerBuilder $container
-     * @return $this
-     */
-    protected function parseValidateSchemaConfig(array $config, ContainerBuilder $container)
+    protected function parseValidateSchemaConfig(array $config, ContainerBuilder $container): self
     {
         if ($config['enabled']) {
             $validateSchemaDefinition = $container->getDefinition('dev.validate_schema');

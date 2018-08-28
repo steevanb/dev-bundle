@@ -1,31 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace steevanb\DevBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Builder\NodeBuilder;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\{
+    Definition\Builder\NodeBuilder,
+    Definition\Builder\TreeBuilder,
+    Definition\ConfigurationInterface
+};
 
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * @return TreeBuilder
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('dev');
 
-        $this->addTranslationConfig($rootNode->children());
-        $this->addValidateSchemaConfig($rootNode->children());
+        $this
+            ->addTranslationConfig($rootNode->children())
+            ->addValidateSchemaConfig($rootNode->children());
 
         return $treeBuilder;
     }
 
-    /**
-     * @param NodeBuilder $node
-     */
-    protected function addTranslationConfig(NodeBuilder $node)
+    protected function addTranslationConfig(NodeBuilder $node): self
     {
         $node
             ->arrayNode('translation_not_found')
@@ -46,14 +45,12 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
+
+        return $this;
     }
 
-    /**
-     * @param NodeBuilder $node
-     */
-    protected function addValidateSchemaConfig(NodeBuilder $node)
+    protected function addValidateSchemaConfig(NodeBuilder $node): self
     {
         $node
             ->arrayNode('validate_schema')
@@ -100,5 +97,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end();
+
+        return $this;
     }
 }

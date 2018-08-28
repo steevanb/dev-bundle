@@ -1,3 +1,8 @@
+### [5.0.0](../../compare/4.1.1...5.0.0) - 2018-08-28
+
+- Fix symfony 4 dependency : remove symfony/symfony, add good ones
+- PHP 7.1 syntax
+
 ### [4.1.1](../../compare/4.1.0...4.1.1) - 2018-08-23
 
 - [@ZeMarine](https://github.com/zemarine) Allow Symfony ^4.0

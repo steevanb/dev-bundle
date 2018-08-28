@@ -1,16 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace steevanb\DevBundle\DataCollector;
 
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{
+    Request,
+    Response
+};
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 class LoadedCollector extends DataCollector
 {
     /**
-     * I know we should try to not have Container sa dependency
+     * I know we should try to not have Container as dependency
      * But i need it to get fresh data in collect()
      * I need Container, not ContainerInterface
      * @var Container
@@ -22,13 +26,12 @@ class LoadedCollector extends DataCollector
         $this->container = $container;
     }
 
-    /** @return string */
-    public function getName()
+    public function getName(): string
     {
         return 'loaded_data_collector';
     }
 
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, \Exception $exception = null): void
     {
         $this->data = [
             'declaredClasses' => get_declared_classes(),
@@ -43,8 +46,12 @@ class LoadedCollector extends DataCollector
         ];
     }
 
-    /** @return array */
-    public function getDeclaredClasses()
+    public function reset(): void
+    {
+        $this->data = [];
+    }
+
+    public function getDeclaredClasses(): array
     {
         static $sorted = false;
         if ($sorted === false) {
@@ -55,14 +62,12 @@ class LoadedCollector extends DataCollector
         return $this->data['declaredClasses'];
     }
 
-    /** @return int */
-    public function countDeclaredClasses()
+    public function countDeclaredClasses(): int
     {
         return count($this->data['declaredClasses']);
     }
 
-    /** @return array */
-    public function getDeclaredInterfaces()
+    public function getDeclaredInterfaces(): array
     {
         static $sorted = false;
         if ($sorted === false) {
@@ -73,14 +78,12 @@ class LoadedCollector extends DataCollector
         return $this->data['declaredInterfaces'];
     }
 
-    /** @return int */
-    public function countDeclaredInterfaces()
+    public function countDeclaredInterfaces(): int
     {
         return count($this->data['declaredInterfaces']);
     }
 
-    /** @return array */
-    public function getDeclaredTraits()
+    public function getDeclaredTraits(): array
     {
         static $sorted = false;
         if ($sorted === false) {
@@ -91,14 +94,12 @@ class LoadedCollector extends DataCollector
         return $this->data['declaredTraits'];
     }
 
-    /** @return int */
-    public function countDeclaredTraits()
+    public function countDeclaredTraits(): int
     {
         return count($this->data['declaredTraits']);
     }
 
-    /** @return array */
-    public function getDefinedConstants()
+    public function getDefinedConstants(): array
     {
         static $sorted = false;
         if ($sorted === false) {
@@ -109,14 +110,12 @@ class LoadedCollector extends DataCollector
         return $this->data['definedConstants'];
     }
 
-    /** @return int */
-    public function countDefinedConstants()
+    public function countDefinedConstants(): int
     {
         return count($this->data['definedConstants']);
     }
 
-    /** @return array */
-    public function getDefinedFunctions()
+    public function getDefinedFunctions(): array
     {
         static $sorted = false;
         if ($sorted === false) {
@@ -127,13 +126,11 @@ class LoadedCollector extends DataCollector
         return $this->data['definedFunctions'];
     }
 
-    /** @return int */
-    public function countDefinedFunctions()
+    public function countDefinedFunctions(): int
     {
         return count($this->data['definedFunctions']);
     }
 
-    /** @return array */
     public function getServiceIds(): array
     {
         static $sorted = false;
@@ -145,14 +142,12 @@ class LoadedCollector extends DataCollector
         return $this->data['services'];
     }
 
-    /** @return int */
-    public function countServiceIds()
+    public function countServiceIds(): int
     {
         return count($this->data['services']);
     }
 
-    /** @return array */
-    public function getParameters()
+    public function getParameters(): array
     {
         static $sorted = false;
         if ($sorted === false) {
@@ -163,14 +158,12 @@ class LoadedCollector extends DataCollector
         return $this->data['parameters'];
     }
 
-    /** @return int */
-    public function countParameters()
+    public function countParameters(): int
     {
         return count($this->data['parameters']);
     }
 
-    /** @return array */
-    public function getListeners()
+    public function getListeners(): array
     {
         static $sorted = false;
         if ($sorted === false) {
@@ -181,8 +174,7 @@ class LoadedCollector extends DataCollector
         return $this->data['listeners'];
     }
 
-    /** @return int */
-    public function countListeners()
+    public function countListeners(): int
     {
         $return = 0;
         foreach ($this->getListeners() as $listeners) {
@@ -192,8 +184,7 @@ class LoadedCollector extends DataCollector
         return $return;
     }
 
-    /** @return array */
-    public function getInstantiatedServices()
+    public function getInstantiatedServices(): array
     {
         static $sorted = false;
         if ($sorted === false) {
@@ -204,14 +195,12 @@ class LoadedCollector extends DataCollector
         return $this->data['instantiatedServices'];
     }
 
-    /** @return int */
-    public function countInstantiatedServices()
+    public function countInstantiatedServices(): int
     {
         return count($this->data['instantiatedServices']);
     }
 
-    /** @return array */
-    protected function getListenersData()
+    protected function getListenersData(): array
     {
         $return = [];
         foreach ($this->container->get('event_dispatcher')->getListeners() as $eventId => $listeners) {
@@ -230,8 +219,7 @@ class LoadedCollector extends DataCollector
         return $return;
     }
 
-    /** @return array */
-    protected function getInstantiatedServicesData()
+    protected function getInstantiatedServicesData(): array
     {
         $reflectionProperty = new \ReflectionProperty(get_class($this->container), 'services');
         $reflectionProperty->setAccessible(true);

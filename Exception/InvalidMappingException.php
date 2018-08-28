@@ -1,14 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace steevanb\DevBundle\Exception;
 
 class InvalidMappingException extends \Exception
 {
-    /**
-     * @param string $em
-     * @param string $error
-     */
-    public function __construct($em, $error)
+    public function __construct(string $em, string $error)
     {
         parent::__construct('[EntityManager : ' . $em . '] ' . $error);
     }

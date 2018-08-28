@@ -1,6 +1,7 @@
-[![version](https://img.shields.io/badge/version-4.1.1-green.svg)](https://github.com/steevanb/dev-bundle/tree/4.1.1)
-[![symfony](https://img.shields.io/badge/symfony-^2.6|^3.0|^4.0-blue.svg)](https://symfony.com/)
-![Lines](https://img.shields.io/badge/code%20lines-1385-green.svg)
+[![version](https://img.shields.io/badge/version-5.0.0-green.svg)](https://github.com/steevanb/dev-bundle/tree/5.0.0)
+[![symfony](https://img.shields.io/badge/php-^7.1-blue.svg)](https://symfony.com/)
+[![symfony](https://img.shields.io/badge/symfony_framework_bundle-^4.0-blue.svg)](https://symfony.com/)
+![Lines](https://img.shields.io/badge/code%20lines-1322-green.svg)
 ![Total Downloads](https://poser.pugx.org/steevanb/dev-bundle/downloads)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/steevanb/dev-bundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/steevanb/dev-bundle/?branch=master)
 
@@ -8,12 +9,14 @@
 
 Bundle for dev environment, to help you find missing translations, validate your Doctrine schema automatically and show what is loaded (classes, services etc).
 
+For Symfony ^2.6 and ^3.0, see [steevan/dev-bundle ^4.1](https://github.com/steevanb/dev-bundle/tree/4.1.1).
+
 [Changelog](changelog.md)
 
 ### Installation
 
 ```bash
-composer require steevanb/dev-bundle ^4.1
+composer require steevanb/dev-bundle ^5.0
 ```
 
 Or add it manually, and then execute _composer update steevanb/dev-bundle_ :
@@ -22,7 +25,7 @@ Or add it manually, and then execute _composer update steevanb/dev-bundle_ :
 # composer.json
 {
     "require": {
-        "steevanb/dev-bundle": "^4.1"
+        "steevanb/dev-bundle": "^5.0"
     }
 }
 ```

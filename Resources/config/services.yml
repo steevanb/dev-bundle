@@ -1,7 +1,7 @@
 services:
     dev.validate_schema:
         class: steevanb\DevBundle\Service\ValidateSchemaService
-        arguments: [ '@doctrine', '@kernel' ]
+        arguments: ['@doctrine', '@kernel']
 
     dev.loaded_data_collector:
         class: steevanb\DevBundle\DataCollector\LoadedCollector
@@ -11,4 +11,4 @@ services:
             -
                 name: data_collector
                 id: loaded_data_collector
-                template: 'DevBundle:DataCollector:template.html.twig'
+                template: '@Dev/DataCollector/template.html.twig'

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace steevanb\DevBundle\Service;
 
 use Doctrine\ORM\Tools\SchemaValidator;
@@ -25,11 +27,7 @@ class ValidateSchemaService
     /** @var string[] */
     protected $mappingPaths = [];
 
-    /**
-     * Messages from Doctrine\ORM\Tools\SchemaValidator
-     *
-     * @var array
-     */
+    /** Messages from Doctrine\ORM\Tools\SchemaValidator */
     protected $schemaValidatorMessages = array(
         'The field \'%s\' ',
         'The field %s ',
@@ -39,21 +37,13 @@ class ValidateSchemaService
         'If association %s '
     );
 
-    /**
-     * @param RegistryInterface $doctrine
-     * @param KernelInterface $kernel
-     */
     public function __construct(RegistryInterface $doctrine, KernelInterface $kernel)
     {
         $this->doctrine = $doctrine;
         $this->kernel = $kernel;
     }
 
-    /**
-     * @param array $excludes
-     * @return $this
-     */
-    public function setExcludes(array $excludes)
+    public function setExcludes(array $excludes): self
     {
         $this->excludedEntities = array();
         $this->excludedProperties = array();
@@ -69,11 +59,7 @@ class ValidateSchemaService
         return $this;
     }
 
-    /**
-     * @param string $path
-     * @return $this
-     */
-    public function addMappingPath($path)
+    public function addMappingPath(string $path): self
     {
         if (in_array($path, $this->mappingPaths) === false) {
             $this->mappingPaths[] = $path;
@@ -82,11 +68,7 @@ class ValidateSchemaService
         return $this;
     }
 
-    /**
-     * @param string $bundle
-     * @return $this
-     */
-    public function addMappingBundle($bundle)
+    public function addMappingBundle(string $bundle): self
     {
         $path = $this->kernel->getBundle($bundle)->getPath();
         $path .= DIRECTORY_SEPARATOR . 'Resources';
@@ -97,13 +79,10 @@ class ValidateSchemaService
         return $this;
     }
 
-    /**
-     * @throws InvalidMappingException
-     */
-    public function assertSchemaIsValid()
+    public function assertSchemaIsValid(): self
     {
         if ($this->needValidate()) {
-            foreach ($this->doctrine->getManagers() as $managerName => $manager) {
+            foreach ($this->doctrine->getEntityManagers() as $managerName => $manager) {
                 $validator = new SchemaValidator($manager);
                 foreach ($validator->validateMapping() as $entity => $errors) {
                     $this->assertAuthorizedMappingErrors($managerName, $entity, $errors);
@@ -112,20 +91,16 @@ class ValidateSchemaService
 
             $this->saveLastValidateTimestamp();
         }
+
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    protected function getLastMappingValidateFilePath()
+    protected function getLastMappingValidateFilePath(): string
     {
         return $this->kernel->getCacheDir() . DIRECTORY_SEPARATOR . 'dev_bundle_last_mapping_validate';
     }
 
-    /**
-     * @return bool
-     */
-    protected function needValidate()
+    protected function needValidate(): bool
     {
         $lastValidateTimestamp = $this->getLastValidateTimestamp();
         $return = false;
@@ -145,10 +120,7 @@ class ValidateSchemaService
         return $return;
     }
 
-    /**
-     * @return $this
-     */
-    protected function saveLastValidateTimestamp()
+    protected function saveLastValidateTimestamp(): self
     {
         $filePath = $this->getLastMappingValidateFilePath();
         if (file_exists($filePath)) {
@@ -160,24 +132,14 @@ class ValidateSchemaService
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    protected function getLastValidateTimestamp()
+    protected function getLastValidateTimestamp(): int
     {
         $filePath = $this->getLastMappingValidateFilePath();
 
         return file_exists($filePath) ? filemtime($filePath) : 0;
     }
 
-    /**
-     * @param string $managerName
-     * @param string $entityName
-     * @param array $errors
-     * @return $this
-     * @throws InvalidMappingException
-     */
-    protected function assertAuthorizedMappingErrors($managerName, $entityName, array $errors)
+    protected function assertAuthorizedMappingErrors(string $managerName, string $entityName, array $errors): self
     {
         if (in_array($entityName, $this->excludedEntities) === false) {
             foreach ($errors as $error) {

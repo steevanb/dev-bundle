@@ -1,12 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace steevanb\DevBundle\Exception;
 
 class TranslationsNotFoundException extends \Exception
 {
-    /**
-     * @param array $messages
-     */
     public function __construct(array $messages)
     {
         $missings = array();

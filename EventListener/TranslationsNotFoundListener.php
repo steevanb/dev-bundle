@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace steevanb\DevBundle\EventListener;
 
 use steevanb\DevBundle\Exception\TranslationsNotFoundException;
@@ -13,29 +15,19 @@ class TranslationsNotFoundListener
     /** @var bool */
     protected $allowFallbacks = false;
 
-    /**
-     * @param DataCollectorTranslator $dataCollectorTranslator
-     */
     public function __construct(DataCollectorTranslator $dataCollectorTranslator)
     {
         $this->dataCollectorTranslator = $dataCollectorTranslator;
     }
 
-    /**
-     * @param bool $allow
-     * @return $this
-     */
-    public function setAllowFallbacks($allow)
+    public function setAllowFallbacks(bool $allow): self
     {
         $this->allowFallbacks = $allow;
 
         return $this;
     }
 
-    /**
-     * @throws TranslationsNotFoundException
-     */
-    public function assertAllTranslationsFound()
+    public function assertAllTranslationsFound(): self
     {
         $missings = array();
         foreach ($this->dataCollectorTranslator->getCollectedMessages() as $message) {
@@ -54,5 +46,7 @@ class TranslationsNotFoundListener
         if (count($missings) > 0) {
             throw new TranslationsNotFoundException($missings);
         }
+
+        return $this;
     }
 }
