@@ -109,7 +109,7 @@ class ValidateSchemaService
             if (is_dir($path)) {
                 $finder = new Finder();
                 foreach ($finder->in($path)->files() as $file) {
-                    if (filemtime($file) >= $lastValidateTimestamp) {
+                    if ($file->getMTime() >= $lastValidateTimestamp) {
                         $return = true;
                         continue 2;
                     }
