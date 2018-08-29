@@ -1,3 +1,7 @@
+### [5.0.1](../../compare/5.0.0...5.0.1) - 2018-08-29
+
+- [@ZeMarine](https://github.com/zemarine) Fix filemtime() call for strict_types
+
 ### [5.0.0](../../compare/4.1.1...5.0.0) - 2018-08-28
 
 - Fix symfony 4 dependency : remove symfony/symfony, add good ones
